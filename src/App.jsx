@@ -1,31 +1,20 @@
 import { useState, useEffect, useCallback } from "react";
 import ImageContainer from "./components/imageContainer";
+import Header from "./components/header";
+import About from "./components/about";
+import Footer from "./components/footer";
+
+import { gatherImages } from "./api/pexelApi";
+
 import "./App.css";
-
-const apiKey = import.meta.env.VITE_REACT_APP_PEXELS_API_KEY;
-
-async function gatherImages() {
-  const response = await fetch(
-    `https://api.pexels.com/v1/search?query=cats&per_page=9`,
-    {
-      method: "GET",
-
-      headers: {
-        Authorization: apiKey,
-        // "jklRKNik8zZQiFeCDgVH0qMw97t9mHRbM4oKrWKgzxBZXjrgEnDNFP1d",
-      },
-    }
-  );
-  const data = await response.json();
-  console.log(data);
-  return data;
-}
 
 function App() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(0);
+  const [wins, setWins] = useState(0);
+  const [start, setStart] = useState(false);
 
   const updateSuccess = useCallback((shouldIncrementOrReset) => {
     setSuccess((prevSuccess) => (shouldIncrementOrReset ? prevSuccess + 1 : 0));
@@ -41,39 +30,35 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    if (images.length === 0) return;
+    if (success === images.length) {
+      alert("You won!");
+      setWins((prevWins) => prevWins + 1);
+      setSuccess(0);
+    }
+  }, [success, images.length]);
+
+  if (loading) return <h1>Loading...</h1>;
+  if (error) return <h1>{error}</h1>;
+
   return (
     <div className="App">
-      <header>
-        <h1>Image Gallery</h1>
-        <h2>{`successful choices ${success}`}</h2>
-      </header>
+      <Header success={success} wins={wins} start={start} />
       <main>
-        {loading ? (
-          <h1>Loading...</h1>
-        ) : error ? (
-          <p>{error}</p>
+        {!start ? (
+          <About setStart={setStart} />
         ) : (
           <ImageContainer
             updateSuccess={updateSuccess}
             success={success}
             images={images}
+            setImages={setImages}
+            setWins={setWins}
           />
         )}
       </main>
-      <footer>
-        <div className="signature">
-          <a
-            href="https://github.com/Brent-the-carpenter/memory-card-game"
-            rel="noopener noreferrer"
-          >
-            <h3>Brent-The-Carpenter</h3>{" "}
-            <img
-              src="/github-mark/github-mark.svg"
-              alt="link to github account"
-            />{" "}
-          </a>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

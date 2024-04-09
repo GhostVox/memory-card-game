@@ -1,0 +1,20 @@
+footer {
+  width: 100vw;
+
+  bottom: 0;
+}
+.signature a {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2em;
+  font-weight: 500;
+  color: var(--color-primary);
+  text-decoration: underline;
+  gap: 0.5em;
+  img {
+    width: 40px;
+    margin-right: 0.5em;
+  }
+}

@@ -1,0 +1,19 @@
+header {
+  display: flex;
+  flex-direction: column;
+}
+.score {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-evenly;
+}
+@media screen and (max-width: 768px) {
+  :root {
+    padding: none;
+  }
+  .score {
+    flex-direction: column;
+    align-items: center;
+  }
+}
