@@ -1,7 +1,8 @@
 footer {
+  position: absolute;
   width: 100vw;
-
-  bottom: 0;
+  position: sticky;
+  top: 90%;
 }
 .signature a {
   display: flex;

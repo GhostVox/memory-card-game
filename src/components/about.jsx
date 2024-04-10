@@ -1,9 +1,11 @@
+import "../styles/about.css";
+
 export default function About({ setStart }) {
   const handleClick = () => {
     setStart(true);
   };
   return (
-    <div>
+    <div className="about">
       <h2>About</h2>
       <p>
         {`This is a memory card game. Click on an image to earn points, but don't
